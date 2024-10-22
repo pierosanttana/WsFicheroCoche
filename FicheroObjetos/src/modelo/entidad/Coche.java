@@ -1,8 +1,9 @@
 package modelo.entidad;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Coche {
+public class Coche implements Serializable{
 	private long ID;
 	private String nombre;
 	private String marca;

@@ -4,7 +4,10 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import modelo.entidad.Coche;
 
@@ -36,10 +39,61 @@ public class DaoCoche {
 		}
 		return null;
 	}
+
+	/**
+	 * 
+	 * @param c
+	 * @throws Exception
+	 */
 	public void registrar(Coche c) throws Exception {
-		File file = new File (NOMBRE_FIHERO);
+		File file = new File(NOMBRE_FIHERO);
+		if (!file.exists()) {
+			throw new Exception("Fichero no existe XD");
+
+		}
+		try (FileOutputStream fichero = new FileOutputStream(NOMBRE_FIHERO, true);
+				ObjectOutputStream escritor = new ObjectOutputStream(fichero);) {
+			escritor.writeObject(c);
+			System.out.println("El objeto ha sifo guardado correctamente");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public long generadorId() throws Exception{
+
+		return 0;
+	}
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<Coche>getListaCoches() throws Exception{
+		ArrayList<Coche>listaCoches = null;;
 		
 		
+		
+		return listaCoches;
+		
+		
+		
+	}
+	/**
+	 * 
+	 * @param coche
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean borrarCocheById(Coche coche)throws Exception {
+		
+		return false;
 	}
 
 }
