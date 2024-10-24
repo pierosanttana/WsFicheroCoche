@@ -14,6 +14,7 @@ import modelo.entidad.Coche;
 public class DaoCoche {
 	private static final String NOMBRE_FIHERO = "coches.dat";
 	private static final String FICHERO_TEMPORAL = "ficheroTemporal.dat";
+	private long id = 9966;
 
 	/**
 	 * Metodo que dado un ID pasado por parametro busca su coincidencia en el
@@ -55,6 +56,8 @@ public class DaoCoche {
 		}
 		try (FileOutputStream fichero = new FileOutputStream(NOMBRE_FIHERO, true);
 				ObjectOutputStream escritor = new ObjectOutputStream(fichero);) {
+			id++;
+			c.setID(id);
 			escritor.writeObject(c);
 			System.out.println("El objeto ha sido guardado correctamente");
 
@@ -105,7 +108,7 @@ public class DaoCoche {
 	 */
 	public void borrarCocheById(long id) throws Exception {
 		ArrayList<Coche>listaCoches = getListaCoches();
-		if(listaCoches.isEmpty() || listaCoches== null) {
+		if(listaCoches.isEmpty() || listaCoches == null) {
 			// Devolvemos algo no se el que
 		}
 		boolean encontrado = false;
