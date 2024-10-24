@@ -44,15 +44,56 @@ public class GestorCoche {
 		}
 	}
 
+	/**
+	 * Metodo que borrar un coche pasado por parametro
+	 * 
+	 * @param c Coche a borrar
+	 * @return <b>0</b> el Coche es null, <b>1</b> el Coche es valido pero no se
+	 *         encuentra guardado, <b>2</b> el Coche se ha borrado, <b>666</b> en
+	 *         caso de que haya algún problema en el de entrada salida
+	 */
 	public int borrarCoche(Coche c) {
-		
-		
-		return 4;
+
+		if (c == null) {
+			return 0;
+		}
+
+		dc = new DaoCoche();
+
+		try {
+			Coche cBorrar = dc.getById(c.getID());
+
+			if (cBorrar == null) {
+				return 1;
+			} else {
+				dc.borrarCocheById(cBorrar.getID());
+				return 2;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 666;
+		}
+
 	}
 
-	public ArrayList<Coche> mostrarListaCoches() {
-		return null;
+	/**
+	 * * Método que devuelve una lista de coches. Si no hay coches o la lista es
+	 * null, devuelve una lista vacía.
+	 * 
+	 * @return <b>Array</b> de coches o un <b>Array</b> vacía si no hay coches.
+	 * @throws <b>Exception</b> si ocurre algún error al intentar recuperar la lista
+	 */
+	public ArrayList<Coche> mostrarListaCoches() throws Exception {
+		dc = new DaoCoche();
 
+		ArrayList<Coche> listCoches = dc.getListaCoches();
+
+		if (listCoches == null) {
+			return new ArrayList<>();
+		} else {
+			return listCoches;
+		}
 	}
 
 }
