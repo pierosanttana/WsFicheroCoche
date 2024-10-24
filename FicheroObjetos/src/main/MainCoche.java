@@ -1,9 +1,13 @@
 package main;
 
+import interfaz.InterfazCoche;
+
 public class MainCoche {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		InterfazCoche ic = new InterfazCoche();
+		
+		ic.iniciarAplicacion();
 
 	}
 

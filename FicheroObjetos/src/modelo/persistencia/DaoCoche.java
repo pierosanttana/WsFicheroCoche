@@ -1,6 +1,7 @@
 package modelo.persistencia;
 
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,9 +13,11 @@ import java.util.ArrayList;
 import modelo.entidad.Coche;
 
 public class DaoCoche {
-	private static final String NOMBRE_FIHERO = "coches.dat";
+	private static final String NOMBRE_FICHERO = "coches.dat";
 	private static final String FICHERO_TEMPORAL = "ficheroTemporal.dat";
-	private long id = 9966;
+    private static int contadorCoches = 9900; // Contador estático para generar IDs únicos
+    private int id; 
+	ArrayList<Coche> listaCoches;
 
 	/**
 	 * Metodo que dado un ID pasado por parametro busca su coincidencia en el
@@ -26,16 +29,33 @@ public class DaoCoche {
 	 * @throws <b>Exception</b>, en caso de que haya algún problema con el fichero.
 	 */
 	public Coche getById(long id) throws Exception {
-		Coche coche = null;
-		try (FileInputStream fichero = new FileInputStream(NOMBRE_FIHERO);
+		try (FileInputStream fichero = new FileInputStream(NOMBRE_FICHERO);
 				ObjectInputStream lector = new ObjectInputStream(fichero);) {
-			coche = (Coche) lector.readObject();
+			
+			boolean eof = false;
+			Coche c;
+			while (!eof) {//leemos hasta fin de fichero
+				try {
+					c = (Coche) lector.readObject();//puede arrojar excepciones de tipo EOFException
+												//en caso de que no haya mas objetos que leer
+												//es decir, estamos en EOF (End Of File)
+					if (id == c.getID()) {
+						return c;
+					}
+					System.out.println(c);
+				} catch (EOFException e1) {//si salta esta excepcion, es que hemos llegado a EOF
+					eof = true;
+					//break;
+				} catch (IOException e2) {
+					System.out.println("Error al leer los contactos de la agenda");
+					System.out.println(e2.getMessage());
+				} catch (ClassNotFoundException e3) {
+					System.out.println("La clase Contacto no est� cargada en memoria");
+					System.out.println(e3.getMessage());
+				}
+			}	
 
-			if (id == coche.getID()) {
-				return coche;
-
-			}
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -49,16 +69,15 @@ public class DaoCoche {
 	 * @throws Exception
 	 */
 	public void registrar(Coche c) throws Exception {
-		File file = new File(NOMBRE_FIHERO);
-		if (!file.exists()) {
-			throw new Exception("Fichero no existe XD");
+		id = ++contadorCoches;
 
-		}
-		try (FileOutputStream fichero = new FileOutputStream(NOMBRE_FIHERO, true);
+		try (FileOutputStream fichero = new FileOutputStream(NOMBRE_FICHERO, true);
 				ObjectOutputStream escritor = new ObjectOutputStream(fichero);) {
-			id++;
+			
 			c.setID(id);
 			escritor.writeObject(c);
+			escritor.flush();
+			System.out.println(c);
 			System.out.println("El objeto ha sido guardado correctamente");
 
 		} catch (IOException e) {
@@ -82,17 +101,42 @@ public class DaoCoche {
 	 * @throws Exception
 	 */
 	public ArrayList<Coche> getListaCoches() throws Exception {
-		ArrayList<Coche> listaCoches = null;
-		;
-		try (FileInputStream file = new FileInputStream(NOMBRE_FIHERO);
+		listaCoches = new ArrayList<Coche>();
+		
+		try (FileInputStream file = new FileInputStream(NOMBRE_FICHERO);
 				ObjectInputStream obj = new ObjectInputStream(file)) {
-			Coche coche = (Coche) obj.readObject();
-			System.out.println("El coche se ha deserializado");
-			listaCoches.add(coche);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+			
+			boolean eof = false;
+			Coche coche;
+			
+			while (!eof) {//leemos hasta fin de fichero
+				try {
+					coche = (Coche) obj.readObject();//puede arrojar excepciones de tipo EOFException
+					listaCoches.add(coche);						//en caso de que no haya mas objetos que leer
+												//es decir, estamos en EOF (End Of File)
+					System.out.println(coche);
+					System.out.println("El coche se ha deserializado dao");
+					
+				} catch (EOFException e1) {//si salta esta excepcion, es que hemos llegado a EOF
+					eof = true;
+					//break;
+				} catch (IOException e2) {
+					System.out.println("Error al leer los coches de la lista dao");
+					System.out.println(e2.getMessage());
+					e2.printStackTrace();
+	
+				} catch (ClassNotFoundException e3) {
+					System.out.println("La clase Coche no esta cargada en memoria dao");
+					System.out.println(e3.getMessage());
+	
+				}
+			}
+			
+			
+			} catch (IOException e) {
+				System.out.println("No se ha podido abrir la lista de coches dao");
+				System.out.println(e.getMessage());
+			}
 		return listaCoches;
 
 	}
@@ -126,7 +170,7 @@ public class DaoCoche {
 					listaCochesActualizado.add(coche);
 				}
 			}
-			try(FileOutputStream file1 = new FileOutputStream(NOMBRE_FIHERO);
+			try(FileOutputStream file1 = new FileOutputStream(NOMBRE_FICHERO);
 				ObjectOutputStream obj1 = new ObjectOutputStream(file1)){
 				for(Coche coche :listaCochesActualizado) {
 					obj1.writeObject(coche);

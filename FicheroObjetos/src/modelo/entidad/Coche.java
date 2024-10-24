@@ -4,24 +4,27 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Coche implements Serializable{
-	private long ID;
+	
+    private static final long serialVersionUID = 1L;
+    private int id;
 	private String nombre;
 	private String marca;
 	private String modelo;
 	private TipoMotor TipoMotor;
-	public Coche(long iD, String nombre, String marca, String modelo, modelo.entidad.TipoMotor tipoMotor) {
+	
+	
+	public Coche(String nombre, String marca, String modelo, modelo.entidad.TipoMotor tipoMotor) {
 		super();
-		ID = iD;
 		this.nombre = nombre;
 		this.marca = marca;
 		this.modelo = modelo;
 		TipoMotor = tipoMotor;
 	}
 	public long getID() {
-		return ID;
+		return id;
 	}
-	public void setID(long iD) {
-		ID = iD;
+	public void setID(int iD) {
+		id = iD;
 	}
 	public String getNombre() {
 		return nombre;
@@ -49,7 +52,7 @@ public class Coche implements Serializable{
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(ID, TipoMotor, marca, modelo, nombre);
+		return Objects.hash(id, TipoMotor, marca, modelo, nombre);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -60,13 +63,13 @@ public class Coche implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Coche other = (Coche) obj;
-		return ID == other.ID && TipoMotor == other.TipoMotor && Objects.equals(marca, other.marca)
+		return id == other.id && TipoMotor == other.TipoMotor && Objects.equals(marca, other.marca)
 				&& Objects.equals(modelo, other.modelo) && Objects.equals(nombre, other.nombre);
 	}
 	@Override
 	public String toString() {
 	    return "Coche {" + "\n" +
-	           "   ID        = " + ID + ",\n" +
+	           "   ID        = " + id + ",\n" +
 	           "   Nombre    = " + nombre + ",\n" +
 	           "   Marca     = " + marca + ",\n" +
 	           "   Modelo    = " + modelo + ",\n" +

@@ -27,47 +27,47 @@ public class GestorCoche {
 		dc = new DaoCoche();
 
 		try {
-			if (c.getNombre().isBlank()) {
-				return 1;
-			} else if (c.getMarca().isBlank()) {
-				return 2;
-			} else if (c.getModelo().isBlank()) {
-				return 3;
-			} else if (c.getTipoMotor().toString().isBlank()) {
-				return 4;
-			} else {
-				dc.registrar(c);
-				return 5;
-			}
+		       // Validar campos obligatorios
+	        if (c.getNombre() == null || c.getNombre().isBlank()) {
+	            return 1;  // El nombre está vacío
+	        }
+	        if (c.getMarca() == null || c.getMarca().isBlank()) {
+	            return 2;  // La marca está vacía
+	        }
+	        if (c.getModelo() == null || c.getModelo().isBlank()) {
+	            return 3;  // El modelo está vacío
+	        }
+	        if (c.getTipoMotor() == null || c.getTipoMotor().toString().isBlank()) {
+	            return 4;  // El tipo de motor está vacío
+	        }
+	        
+	        // Registrar coche si todas las validaciones pasan
+	        dc.registrar(c);
+	        return 5;  // Registro exitoso
 		} catch (Exception e) {
 			return 666;
 		}
 	}
 
 	/**
-	 * Metodo que borrar un coche pasado por parametro
+	 * Metodo que borra un coche pasadondo el id por parametro
 	 * 
-	 * @param c Coche a borrar
-	 * @return <b>0</b> el Coche es null, <b>1</b> el Coche es valido pero no se
-	 *         encuentra guardado, <b>2</b> el Coche se ha borrado, <b>666</b> en
-	 *         caso de que haya algún problema en el de entrada salida
+	 * @param id del coche a borrar
+	 * @return <b>0</b> el Coche no se encuentra, <b>1</b> el Coche se ha borrado, 
+	 * <b>666</b> en caso de que haya algún problema en el de entrada salida
 	 */
-	public int borrarCoche(Coche c) {
-
-		if (c == null) {
-			return 0;
-		}
+	public int borrarCoche(long id) {
 
 		dc = new DaoCoche();
 
 		try {
-			Coche cBorrar = dc.getById(c.getID());
+			Coche cBorrar = dc.getById(id);
 
 			if (cBorrar == null) {
-				return 1;
+				return 0;
 			} else {
 				dc.borrarCocheById(cBorrar.getID());
-				return 2;
+				return 1;
 			}
 
 		} catch (Exception e) {
@@ -94,6 +94,27 @@ public class GestorCoche {
 		} else {
 			return listCoches;
 		}
+	}
+	
+
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Coche buscarById(long id) {
+		DaoCoche dc = new DaoCoche();
+		Coche c;
+		try {
+			c = dc.getById(id);
+			return c;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+		
 	}
 
 }
