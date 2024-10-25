@@ -10,7 +10,7 @@ public class Coche implements Serializable{
 	private String nombre;
 	private String marca;
 	private String modelo;
-	private TipoMotor TipoMotor;
+	private TipoMotor tipoMotor;
 	
 	
 	public Coche(String nombre, String marca, String modelo, modelo.entidad.TipoMotor tipoMotor) {
@@ -18,7 +18,7 @@ public class Coche implements Serializable{
 		this.nombre = nombre;
 		this.marca = marca;
 		this.modelo = modelo;
-		TipoMotor = tipoMotor;
+		this.tipoMotor = tipoMotor;
 	}
 	public long getID() {
 		return id;
@@ -45,14 +45,14 @@ public class Coche implements Serializable{
 		this.modelo = modelo;
 	}
 	public TipoMotor getTipoMotor() {
-		return TipoMotor;
+		return tipoMotor;
 	}
 	public void setTipoMotor(TipoMotor tipoMotor) {
-		TipoMotor = tipoMotor;
+		this.tipoMotor = tipoMotor;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, TipoMotor, marca, modelo, nombre);
+		return Objects.hash(id, tipoMotor, marca, modelo, nombre);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -63,7 +63,7 @@ public class Coche implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Coche other = (Coche) obj;
-		return id == other.id && TipoMotor == other.TipoMotor && Objects.equals(marca, other.marca)
+		return id == other.id && tipoMotor == other.tipoMotor && Objects.equals(marca, other.marca)
 				&& Objects.equals(modelo, other.modelo) && Objects.equals(nombre, other.nombre);
 	}
 	@Override
@@ -73,7 +73,7 @@ public class Coche implements Serializable{
 	           "   Nombre    = " + nombre + ",\n" +
 	           "   Marca     = " + marca + ",\n" +
 	           "   Modelo    = " + modelo + ",\n" +
-	           "   TipoMotor = " + TipoMotor + "\n" +
+	           "   TipoMotor = " + tipoMotor + "\n" +
 	           "}";
 	}
 

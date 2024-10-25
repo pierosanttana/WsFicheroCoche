@@ -103,7 +103,7 @@ public class GestorCoche {
 	 * @return
 	 */
 	public Coche buscarById(long id) {
-		DaoCoche dc = new DaoCoche();
+		dc = new DaoCoche();
 		Coche c;
 		try {
 			c = dc.getById(id);
